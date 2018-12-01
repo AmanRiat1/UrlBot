@@ -6,11 +6,15 @@ client = discord.Client()
 
 @client.event
 async def on_message(message):
+    a = 'https://www.google.ca'
     if message.author == client.user:
         return
 
     if message.content.startswith('!link'):
-        msg = " Here's the link {0.author.mention} https://www.google.ca/".format(message)
+        msg = " Here's the link {}".format(a)
         await client.send_message(message.channel, msg)
+
+
+        
 
 client.run(TOKEN)
