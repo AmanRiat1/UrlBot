@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    container_name: bot-db
+    image: postgres
+    ports:
+      - 5432:5432
+    environment: 
+      POSTGRES_PASSWORD: arsbot
+      POSTGRES_USER: ariat
+      POSTGRES_DB: bot_info
+    volumes:
+      - ./website_information.sql:/docker-entrypoint-initdb.d/website_information.sql
+
+  adminer: 
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  bot:
+    build: .
+    # environment:
+    #   POSTGRES_PASSWORD: arsbot
+    #   POSTGRES_USER: ariat
+    #   POSTGRES_DB: bot_info
+    #   POSTGRES_HOST: bot-db
+
