@@ -16,6 +16,15 @@ conn_string = "host="+ PGHOST +" port="+ "5432" +" dbname="+ PGDATABASE +" user=
 client = discord.Client()
 
 def database_query(operation):
+    '''
+    Performs operations depending on input passed in discord server
+
+    Parameters:
+        operation (str): The PostgreSQL operation
+
+    Returns:
+        tuple: a tuples full of lists that contain rows of the table
+    '''
     try:
         conn = psycopg2.connect(conn_string)
         cursor = conn.cursor()
@@ -35,6 +44,16 @@ def database_query(operation):
             logging.info("PostgreSQL connection is closed")
 
 def make_prettytable(links_list):
+    '''
+    Converts a tuple to an ASCII table
+
+    Parameters:
+        links_list (tuple): A tuple full of lists that contain all the links in the table
+
+    Returns:
+        PrettyTable: An ASCII table filled with links
+    '''
+
     links_table = prettytable.PrettyTable(["Number", "Link"])
     for row in links_list:
         links_table.add_row([row[0], row[1]])
@@ -42,6 +61,13 @@ def make_prettytable(links_list):
 
 @client.event
 async def on_message(message):
+    '''
+    Function that performs operations depending on input passed in discord server
+
+    Parameters:
+        message (str): The input message containing the command
+
+    '''
 
     if message.content.startswith('!link'):
         link_number = message.content[6:]
@@ -51,7 +77,7 @@ async def on_message(message):
         channel = client.get_channel(518464784803299330)
         await channel.send("Here's the link " + link[0][1])
 
-    if message.content.startswith('!alllinks'):
+    if message.content.startswith('!listlinks'):
 
         link_query = "SELECT * FROM website_information"
         links = database_query(link_query)
@@ -61,7 +87,7 @@ async def on_message(message):
         await channel.send(links_table)
 
     if message.content.startswith('!setlink'):
-        new_link = message.content[10:]
+        new_link = message.content[9:]
         link_info = f"INSERT INTO website_information (url) VALUES('{new_link}')"
 
         try:
