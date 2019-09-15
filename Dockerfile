@@ -3,4 +3,4 @@ RUN mkdir /code
 WORKDIR /code
 COPY . /code/
 RUN pip install -r requirements.txt
-CMD python URlTest.py
+CMD python url_bot.py
